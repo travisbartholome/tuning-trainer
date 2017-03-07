@@ -1,6 +1,7 @@
 (function() {
   var audioContext = new AudioContext();
-  document.getElementById("make-noise").addEventListener("click", function() {
+
+  function playAudio(detune, duration, waveform) {
     // Nodes
     let base = audioContext.createOscillator();
     let primary = audioContext.createOscillator();
@@ -9,7 +10,6 @@
 
     // Timing variables
     let startTime = audioContext.currentTime + 0.1;
-    let duration = 3;
     let primaryDelay = 1;
     let stopTime = startTime + duration + primaryDelay;
 
@@ -22,11 +22,14 @@
 
     // Settings for base node
     base.frequency.value = 440;
-    baseGain.gain.value = 0.5; // So the primary is louder than the base
+    base.type = waveform;
+    baseGain.gain.value = 0.3; // So the primary is louder than the base
 
     // Settings for primary node
     primary.frequency.value = 440;
-    primary.detune.value = 25; // Detune A440 up by 25 cents
+    primary.type = waveform;
+    primary.detune.value = detune; // Detune A440 up by 25 cents
+    primaryGain.gain.value = 0.6; // Take the edge off
 
     // Start sounds
     base.start(startTime);
@@ -35,5 +38,12 @@
     // Stop sounds eventually
     primary.stop(stopTime);
     base.stop(stopTime);
+  }
+
+  document.getElementById("make-noise").addEventListener("click", function() {
+    let detune = Number(document.getElementById("detune-value").value);
+    let duration = Number(document.getElementById("duration-value").value);
+    let waveform = document.querySelector('input[name=waveform]:checked').value;
+    playAudio(detune, duration, waveform);
   });
 })();

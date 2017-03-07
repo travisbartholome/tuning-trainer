@@ -7,6 +7,23 @@
 </head>
 <body>
   <button id="make-noise">Make Noise</button>
+
+  <div class="user-input">
+    <label for="detune-value">Detune by:</label>
+    <input type="number" name="detune" id="detune-value"></input>
+  </div>
+  <div class="user-input">
+    <label for="duration-value">Duration:</label>
+    <input type="number" name="duration" id="duration-value"></input>
+  </div>
+  <div class="user-input">
+    <p>Waveform type:</p>
+    <input type="radio" name="waveform" value="triangle" checked>Triangle</input>
+    <input type="radio" name="waveform" value="square">Square</input>
+    <input type="radio" name="waveform" value="sawtooth">Sawtooth</input>
+    <input type="radio" name="waveform" value="sine">Sine</input>
+  </div>
+
   <script type="text/javascript" src="main.js"></script>
 </body>
 </html>
