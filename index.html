@@ -9,6 +9,28 @@
   <button id="make-noise">Make Noise</button>
 
   <div class="user-input">
+    <label for="base-note-value">Base note:</label>
+    <select name="basenote" id="base-note-value">
+      <!-- TODO: Should I even try to use Unicode music sharps and flats here? -->
+      <!-- Always use sharps for accidentals in the value field. -->
+      <option value="A" selected>A</option>
+      <option value="A#">A♯/B♭</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="C#">C♯/D♭</option>
+      <option value="D">D</option>
+      <option value="D#">D♯/E♭</option>
+      <option value="E">E</option>
+      <option value="F">F</option>
+      <option value="F#">F♯/G♭</option>
+      <option value="G">G</option>
+      <option value="G#">G♯/A♭</option>
+    </select>
+  </div>
+  <div class="user-input">
+    <label for="octave-value">Octave:</label>
+    <input type="number" name="octave" id="octave-value"></input>
+  <div class="user-input">
     <label for="detune-value">Detune by:</label>
     <input type="number" name="detune" id="detune-value"></input>
   </div>
@@ -17,6 +39,7 @@
     <input type="number" name="duration" id="duration-value"></input>
   </div>
   <div class="user-input">
+    <!-- This div is formatted differently. Make it the same? -->
     <p>Waveform type:</p>
     <input type="radio" name="waveform" value="triangle" checked>Triangle</input>
     <input type="radio" name="waveform" value="square">Square</input>
