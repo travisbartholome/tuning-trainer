@@ -52,17 +52,55 @@ function playAudio(audioContext, noteName, octave, detune, duration, waveform, c
 
 function newExample(audioContext) {
   const noteList = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-  let detune = 30; // Arbitrary
-  let duration = 2; // Arbitrary
-  let waveform = "triangle"; // Arbitrary
+  let tuningDelta = 30; // Arbitrary. TODO: Make configurable.
+  let isFlat = (Math.random() < 0.5);
+  let detune = isFlat ? -tuningDelta : tuningDelta;
+  let duration = 2; // Arbitrary. TODO: Make configurable.
+  let waveform = "triangle"; // Arbitrary. TODO: Make configurable.
   let noteName = noteList[Math.floor(Math.random()*12)];
-  let octave = 4; // Arbitrary
+  let octave = 4; // Arbitrary. TODO: Make configurable.
 
+  let chooseFlat = function() {
+    if (isFlat) {
+      // Give some feedback for correctness
+        alert("Correct!");
+      // Play a new example after a short delay, or present a "NEXT" button
+    } else {
+      alert("Incorrect!");
+    }
+  };
+
+  let chooseSharp = function() {
+    if (!isFlat) {
+      alert("Correct!");
+    } else {
+      alert("Incorrect!");
+    }
+  };
+
+  // Listen for answer (flat or sharp)
+  document.getElementById("flat").addEventListener("click", chooseFlat);
+  document.getElementById("sharp").addEventListener("click", chooseSharp);
+  document.addEventListener("keyup", function(evt) {
+    // Logic using evt.which, not evt.keyCode
+    // TODO: Add some user-visible feedback, e.g., focus on the selected option.
+    // Make the keypress correspond to some kind of visual feedback.
+    let whichJ = 74; // Keypress: "J"
+    let whichK = 75; // Keypress: "K"
+    if (evt.which === whichJ) {
+      chooseFlat();
+    } else if (evt.which === whichK) {
+      chooseSharp();
+    }
+  });
+
+  // Allow replays after the audio plays.
   let callback = function() {
+    // TODO: Allow user to press "R" to replay using keyboard.
     document.getElementById("replay").addEventListener("click", function() {
       playAudio(audioContext, noteName, octave, detune, duration, waveform, function(){});
     });
-  }
+  };
 
   playAudio(audioContext, noteName, octave, detune, duration, waveform, callback);
 }
