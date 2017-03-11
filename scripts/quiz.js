@@ -1,4 +1,5 @@
-function playAudio(audioContext, noteName, octave, detune, duration, waveform) {
+// TODO: Should this actually include a callback parameter?
+function playAudio(audioContext, noteName, octave, detune, duration, waveform, callback) {
   // Sound constants
   const A4 = 440;
   const C4 = A4 * Math.pow(2, -9/12);
@@ -42,18 +43,32 @@ function playAudio(audioContext, noteName, octave, detune, duration, waveform) {
   // Stop sounds eventually
   primary.stop(stopTime);
   base.stop(stopTime);
+
+  // Execute callback
+  // TODO: IMPORTANT! When does this execute?
+  // I want it to be called once the sound stops playing.
+  callback();
+}
+
+function newExample(audioContext) {
+  const noteList = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+  let detune = 30; // Arbitrary
+  let duration = 2; // Arbitrary
+  let waveform = "triangle"; // Arbitrary
+  let noteName = noteList[Math.floor(Math.random()*12)];
+  let octave = 4; // Arbitrary
+
+  let callback = function() {
+    document.getElementById("replay").addEventListener("click", function() {
+      playAudio(audioContext, noteName, octave, detune, duration, waveform, function(){});
+    });
+  }
+
+  playAudio(audioContext, noteName, octave, detune, duration, waveform, callback);
 }
 
 // (Should execute after DOM load)
 (function() {
-  var audioContext = new AudioContext();
-
-  document.getElementById("make-noise").addEventListener("click", function() {
-    let detune = Number(document.getElementById("detune-value").value);
-    let duration = Number(document.getElementById("duration-value").value);
-    let waveform = document.querySelector("input[name=waveform]:checked").value;
-    let noteName = document.getElementById("base-note-value").value;
-    let octave = Number(document.getElementById("octave-value").value);
-    playAudio(audioContext, noteName, octave, detune, duration, waveform);
-  });
+  let audioContext = new AudioContext();
+  newExample(audioContext);
 })();

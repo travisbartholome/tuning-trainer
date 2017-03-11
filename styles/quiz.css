@@ -18,12 +18,24 @@
   margin: 5px;
 }
 
+.lg-button:hover {
+  background: #444444;
+  color: #ffffff;
+  transition: 0.2s;
+}
+
 .md-button {
   border: 1px solid red;
   border-radius: 10px;
   display: inline-block;
   padding: 5px 25px;
   text-align: center;
+}
+
+.md-button:hover {
+  background: #dd4444;
+  color: #ffffff;
+  transition: 0.2s;
 }
 
 #flat-sharp-btns {
