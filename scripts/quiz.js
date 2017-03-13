@@ -94,6 +94,29 @@ function newExample(audioContext) {
     }
   });
 
+  // Give visual feedback when one of the buttons is selected via keyboard
+  document.addEventListener("keydown", function(evt) {
+    let whichJ = 74;
+    let whichK = 75;
+    if (evt.which === whichJ) {
+      let flat = document.getElementById("flat");
+      flat.setAttribute("style", "background: #444444; color: white");
+      document.addEventListener("keyup", function(evt) {
+        if (evt.which === whichJ) {
+          flat.setAttribute("style", "background: #ffffff; color: #000000");
+        }
+      });
+    } else if (evt.which === whichK) {
+      let sharp = document.getElementById("sharp");
+      sharp.setAttribute("style", "background: #444444; color: white");
+      document.addEventListener("keyup", function(evt) {
+        if (evt.which === whichK) {
+          sharp.setAttribute("style", "background: #ffffff; color: #000000");
+        }
+      });
+    }
+  });
+
   // Allow replays after the audio plays.
   let callback = function() {
     // TODO: Allow user to press "R" to replay using keyboard.

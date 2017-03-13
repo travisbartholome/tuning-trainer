@@ -18,7 +18,7 @@
   margin: 5px;
 }
 
-.lg-button:hover {
+.lg-button:hover, .lg-button:focus {
   background: #444444;
   color: #ffffff;
   transition: 0.2s;
