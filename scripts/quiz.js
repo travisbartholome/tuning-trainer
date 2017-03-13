@@ -1,9 +1,11 @@
-// TODO: Should this actually include a callback parameter?
 function playAudio(audioContext, noteName, octave, detune, duration, waveform, callback) {
   // Sound constants
   const A4 = 440;
   const C4 = A4 * Math.pow(2, -9/12);
   const noteList = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+  let slightDelay = 0.1; // (In seconds)
+
+  // Calculate chosen frequency
   let baseFrequency = C4 * Math.pow(2, noteList.indexOf(noteName)/12);
   baseFrequency *= Math.pow(1/2, 4 - octave);
 
@@ -44,10 +46,8 @@ function playAudio(audioContext, noteName, octave, detune, duration, waveform, c
   primary.stop(stopTime);
   base.stop(stopTime);
 
-  // Execute callback
-  // TODO: IMPORTANT! When does this execute?
-  // I want it to be called once the sound stops playing.
-  callback();
+  // Execute callback after audio finishes playing
+  setTimeout(callback, (stopTime - startTime + slightDelay) * 1000);
 }
 
 function newExample(audioContext) {
@@ -119,9 +119,25 @@ function newExample(audioContext) {
 
   // Allow replays after the audio plays.
   let callback = function() {
+    let replayDiv = '<div class="md-button" id="replay"><p>Replay</p><p class="key-label">R</p></div>';
+    document.getElementById("control-btns").innerHTML = replayDiv;
     // TODO: Allow user to press "R" to replay using keyboard.
-    document.getElementById("replay").addEventListener("click", function() {
+    let replay = document.getElementById("replay");
+    replay.addEventListener("click", function() {
       playAudio(audioContext, noteName, octave, detune, duration, waveform, function(){});
+    });
+    document.addEventListener("keydown", function(evt) {
+      let whichR = 82;
+      if (evt.which === whichR) {
+        replay.setAttribute("style", "background: #dd4444; color: #ffffff");
+      }
+    });
+    document.addEventListener("keyup", function(evt) {
+      let whichR = 82;
+      if (evt.which === whichR) {
+        replay.click();
+        replay.setAttribute("style", "background: #ffffff; color: #000000");
+      }
     });
   };
 
