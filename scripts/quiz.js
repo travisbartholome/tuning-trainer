@@ -62,10 +62,13 @@ function newExample(audioContext) {
   let octave = 4; // Arbitrary. TODO: Make configurable.
 
   let chooseFlat = function() {
+    let feedback = document.getElementById("feedback");
     if (isFlat) {
-      console.log("Correct!");
+      feedback.innerHTML = "✓";
+      feedback.setAttribute("style", "color: green");
     } else {
-      console.log("Incorrect!");
+      feedback.innerHTML = "✕";
+      feedback.setAttribute("style", "color: red");
     }
     // TODO: Present a "NEXT" button between examples
     // TODO: Move to next example after getting an answer
@@ -73,10 +76,13 @@ function newExample(audioContext) {
   };
 
   let chooseSharp = function() {
+    let feedback = document.getElementById("feedback");
     if (!isFlat) {
-      console.log("Correct!");
+      feedback.innerHTML = "✓";
+      feedback.setAttribute("style", "color: green");
     } else {
-      console.log("Incorrect!");
+      feedback.innerHTML = "✕";
+      feedback.setAttribute("style", "color: red");
     }
     //newExample(audioContext);
   };

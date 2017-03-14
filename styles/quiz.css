@@ -38,6 +38,10 @@
   transition: 0.2s;
 }
 
+#feedback-box {
+  font-size: 120px;
+}
+
 #flat-sharp-btns {
   position: absolute;
   top: 35vh;
