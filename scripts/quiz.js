@@ -51,6 +51,7 @@ function playAudio(audioContext, noteName, octave, detune, duration, waveform, c
 }
 
 function newExample(audioContext) {
+  // Assorted parameters
   const noteList = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
   let tuningDelta = 30; // Arbitrary. TODO: Make configurable.
   let isFlat = (Math.random() < 0.5);
@@ -62,20 +63,22 @@ function newExample(audioContext) {
 
   let chooseFlat = function() {
     if (isFlat) {
-      // Give some feedback for correctness
-        alert("Correct!");
-      // Play a new example after a short delay, or present a "NEXT" button
+      console.log("Correct!");
     } else {
-      alert("Incorrect!");
+      console.log("Incorrect!");
     }
+    // TODO: Present a "NEXT" button between examples
+    // TODO: Move to next example after getting an answer
+    //newExample(audioContext);
   };
 
   let chooseSharp = function() {
     if (!isFlat) {
-      alert("Correct!");
+      console.log("Correct!");
     } else {
-      alert("Incorrect!");
+      console.log("Incorrect!");
     }
+    //newExample(audioContext);
   };
 
   // Listen for answer (flat or sharp)
@@ -83,8 +86,6 @@ function newExample(audioContext) {
   document.getElementById("sharp").addEventListener("click", chooseSharp);
   document.addEventListener("keyup", function(evt) {
     // Logic using evt.which, not evt.keyCode
-    // TODO: Add some user-visible feedback, e.g., focus on the selected option.
-    // Make the keypress correspond to some kind of visual feedback.
     let whichJ = 74; // Keypress: "J"
     let whichK = 75; // Keypress: "K"
     if (evt.which === whichJ) {
@@ -121,7 +122,8 @@ function newExample(audioContext) {
   let callback = function() {
     let replayDiv = '<div class="md-button" id="replay"><p>Replay</p><p class="key-label">R</p></div>';
     document.getElementById("control-btns").innerHTML = replayDiv;
-    // TODO: Allow user to press "R" to replay using keyboard.
+
+    // Add listeners for the replay button
     let replay = document.getElementById("replay");
     replay.addEventListener("click", function() {
       playAudio(audioContext, noteName, octave, detune, duration, waveform, function(){});
@@ -141,6 +143,7 @@ function newExample(audioContext) {
     });
   };
 
+  // Initial audio playback
   playAudio(audioContext, noteName, octave, detune, duration, waveform, callback);
 }
 
