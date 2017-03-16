@@ -1,4 +1,5 @@
 // TODO: Don't allow multiple replays to be playing at once. Don't duplicate playback in general
+// TODO: Maintain and show the user's running score
 
 // Globals
 /** TODO: Is there some way I can avoid globals? My problem: too many event listeners.
@@ -110,6 +111,8 @@ function playNewExample(audioContext) {
   // Remove replay button
   removeReplayButton();
   // Play next example
+  // TODO: Present a "NEXT" button between examples (IF the user wants it)
+  // (Make said NEXT button removable eventually using user settings/config)
   newExample(audioContext);
 }
 
@@ -129,7 +132,6 @@ function chooseFlat(audioContext) {
 }
 
 function chooseSharp(audioContext) {
-  // TODO: Present a "NEXT" button between examples
   let feedback = document.getElementById("feedback");
   if (!CURRENT_EXAMPLE.isFlat) {
     feedback.innerHTML = "✓";
@@ -193,19 +195,21 @@ function setAnswerListeners(audioContext) {
         detune = CURRENT_EXAMPLE.detune,
         duration = CURRENT_EXAMPLE.duration,
         waveform = CURRENT_EXAMPLE.waveform;
-    // Replay current example
-    playAudio(audioContext, noteName, octave, detune, duration, waveform, function(){});
+    // Replay current example if replays are currently allowed
+    if (CURRENT_EXAMPLE.allowReplays) {
+      playAudio(audioContext, noteName, octave, detune, duration, waveform, function(){});
+    }
   });
   document.addEventListener("keyup", function(evt) {
     let whichR = 82;
-    if (evt.which === whichR) {
+    if (evt.which === whichR && CURRENT_EXAMPLE.allowReplays) {
       replay.click();
       replay.setAttribute("style", "background: #ffffff; color: #000000");
     }
   });
   document.addEventListener("keydown", function(evt) {
     let whichR = 82;
-    if (evt.which === whichR) {
+    if (evt.which === whichR && CURRENT_EXAMPLE.allowReplays) {
       replay.setAttribute("style", "background: #dd4444; color: #ffffff");
     }
   });

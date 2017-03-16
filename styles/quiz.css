@@ -48,7 +48,6 @@
 }
 
 #control-btns {
-  display: none; /* Should only apply at first load */
   position: absolute;
   top: 55vh;
 }
