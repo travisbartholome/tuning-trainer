@@ -38,6 +38,14 @@
   transition: 0.2s;
 }
 
+#score-box {
+  font-size: 48px;
+  padding: 20px 40px;
+  position: absolute;
+  right: 20vw;
+  top: 5vh;
+}
+
 #feedback-box {
   font-size: 120px;
 }

@@ -11,6 +11,11 @@ const CURRENT_EXAMPLE = {
   allowReplays: false // Should be false at the beginning of each example
 };
 
+const DATA = {
+  totalCorrect: 0,
+  totalQuestions: 0
+};
+
 function playAudio(audioContext, noteName, octave, detune, duration, waveform, callback) {
   // Sound constants
   const A4 = 440;
@@ -77,6 +82,19 @@ function removeReplayButton() {
   document.getElementById("replay").setAttribute("style", "display: none");
 }
 
+function displayScore() {
+  let percent = Math.round(DATA.totalCorrect / DATA.totalQuestions * 100);
+  let scoreStr = percent + "% (" + DATA.totalCorrect + "/" + DATA.totalQuestions + ")";
+  document.getElementById("score").innerHTML = scoreStr;
+}
+
+function updateScore(isCorrect) {
+  DATA.totalQuestions += 1;
+  if (isCorrect) {
+    DATA.totalCorrect += 1;
+  }
+}
+
 function newExample(audioContext) {
   // Assorted parameters
   const noteList = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
@@ -125,6 +143,9 @@ function chooseFlat(audioContext) {
     feedback.innerHTML = "✕";
     feedback.setAttribute("style", "color: red");
   }
+  // Update and display score
+  updateScore(CURRENT_EXAMPLE.isFlat);
+  displayScore();
   // Play next example
   setTimeout(function() {
     playNewExample(audioContext);
@@ -140,6 +161,9 @@ function chooseSharp(audioContext) {
     feedback.innerHTML = "✕";
     feedback.setAttribute("style", "color: red");
   }
+  // Update and display score
+  updateScore(!CURRENT_EXAMPLE.isFlat);
+  displayScore();
   // Play next example
   setTimeout(function() {
     playNewExample(audioContext);
