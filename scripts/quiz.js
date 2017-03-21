@@ -1,14 +1,12 @@
-// TODO: Don't allow multiple replays to be playing at once. Don't duplicate playback in general
-// TODO: Maintain and show the user's running score
+// TODO: Add NEXT button between examples
+// TODO: Allow next button to appear and interrupt playings if the user
+//    gets the example right before the playback is finished?
 
 // Globals
-/** TODO: Is there some way I can avoid globals? My problem: too many event listeners.
-    Looking for a way to only need a single event listener for answer feedback.
-    TODO: What was actually causing the issue with notes not going away?
-    How can I document that issue accurately?
-*/
 const CURRENT_EXAMPLE = {
-  allowReplays: false // Should be false at the beginning of each example
+  allowReplays: false, // Should be false at the beginning of each example
+  isPlaying: false,
+  isScored: false
 };
 
 const DATA = {
@@ -89,9 +87,14 @@ function displayScore() {
 }
 
 function updateScore(isCorrect) {
-  DATA.totalQuestions += 1;
-  if (isCorrect) {
-    DATA.totalCorrect += 1;
+  if (!CURRENT_EXAMPLE.isScored) {
+    // Prevent multiple scorings of the same example
+    CURRENT_EXAMPLE.isScored = true;
+    // Update long-run score information
+    DATA.totalQuestions += 1;
+    if (isCorrect) {
+      DATA.totalCorrect += 1;
+    }
   }
 }
 
@@ -114,34 +117,46 @@ function newExample(audioContext) {
   CURRENT_EXAMPLE.duration = duration;
   CURRENT_EXAMPLE.waveform = waveform;
 
+  // Scoring
+  CURRENT_EXAMPLE.isScored = false;
+
   // Allow replays after the audio plays
   let callback = function() {
-      addReplayButton();
+    CURRENT_EXAMPLE.isPlaying = false;
+    addReplayButton();
   };
 
   // Initial audio playback
+  CURRENT_EXAMPLE.isPlaying = true;
   playAudio(audioContext, noteName, octave, detune, duration, waveform, callback);
 }
 
 function playNewExample(audioContext) {
-  // Clear feedback
-  document.getElementById("feedback").innerHTML = "";
-  // Remove replay button
-  removeReplayButton();
-  // Play next example
-  // TODO: Present a "NEXT" button between examples (IF the user wants it)
-  // (Make said NEXT button removable eventually using user settings/config)
-  newExample(audioContext);
+  if (!CURRENT_EXAMPLE.isPlaying) {
+    // Prevent playing multiple examples simultaneously
+    CURRENT_EXAMPLE.isPlaying = true;
+    // Clear feedback
+    document.getElementById("feedback").innerHTML = "";
+    // Remove replay button
+    removeReplayButton();
+    // Play next example
+    // TODO: Present a "NEXT" button between examples (IF the user wants it)
+    // (Make said NEXT button removable eventually using user settings/config)
+    newExample(audioContext);
+  }
 }
 
 function chooseFlat(audioContext) {
-  let feedback = document.getElementById("feedback");
-  if (CURRENT_EXAMPLE.isFlat) {
-    feedback.innerHTML = "✓";
-    feedback.setAttribute("style", "color: green");
-  } else {
-    feedback.innerHTML = "✕";
-    feedback.setAttribute("style", "color: red");
+  if (!CURRENT_EXAMPLE.isScored) {
+    // Display feedback
+    let feedback = document.getElementById("feedback");
+    if (CURRENT_EXAMPLE.isFlat) {
+      feedback.innerHTML = "✓";
+      feedback.setAttribute("style", "color: green");
+    } else {
+      feedback.innerHTML = "✕";
+      feedback.setAttribute("style", "color: red");
+    }
   }
   // Update and display score
   updateScore(CURRENT_EXAMPLE.isFlat);
@@ -153,13 +168,16 @@ function chooseFlat(audioContext) {
 }
 
 function chooseSharp(audioContext) {
-  let feedback = document.getElementById("feedback");
-  if (!CURRENT_EXAMPLE.isFlat) {
-    feedback.innerHTML = "✓";
-    feedback.setAttribute("style", "color: green");
-  } else {
-    feedback.innerHTML = "✕";
-    feedback.setAttribute("style", "color: red");
+  if (!CURRENT_EXAMPLE.isScored) {
+    // Display feedback
+    let feedback = document.getElementById("feedback");
+    if (!CURRENT_EXAMPLE.isFlat) {
+      feedback.innerHTML = "✓";
+      feedback.setAttribute("style", "color: green");
+    } else {
+      feedback.innerHTML = "✕";
+      feedback.setAttribute("style", "color: red");
+    }
   }
   // Update and display score
   updateScore(!CURRENT_EXAMPLE.isFlat);
@@ -220,8 +238,11 @@ function setAnswerListeners(audioContext) {
         duration = CURRENT_EXAMPLE.duration,
         waveform = CURRENT_EXAMPLE.waveform;
     // Replay current example if replays are currently allowed
-    if (CURRENT_EXAMPLE.allowReplays) {
-      playAudio(audioContext, noteName, octave, detune, duration, waveform, function(){});
+    if (CURRENT_EXAMPLE.allowReplays && !CURRENT_EXAMPLE.isPlaying) {
+      CURRENT_EXAMPLE.isPlaying = true;
+      playAudio(audioContext, noteName, octave, detune, duration, waveform, function(){
+        CURRENT_EXAMPLE.isPlaying = false;
+      });
     }
   });
   document.addEventListener("keyup", function(evt) {

@@ -9,7 +9,7 @@ difficulty. Unisons, octaves, intervals; harmonic and melodic (and in between).
 
 ## 15 March 2017
 
-First quiz is up! Go to https://travisbartholome.github.io/tuning-trainer/quiz.html.
+First quiz is up! Go to https://travisbartholome.github.io/tuning-trainer/quiz.html
 
 This is a flat/sharp test at 30 cents out (yikes).
 We'll play a base pitch, then play a unison out of tune in either direction.
