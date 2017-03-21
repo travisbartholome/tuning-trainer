@@ -191,8 +191,8 @@ function chooseSharp(audioContext) {
 // Should be called before the first call to newExample
 function setAnswerListeners(audioContext) {
   // Listen for answer (flat or sharp)
-  document.getElementById("flat").addEventListener("click", chooseFlat.bind(audioContext));
-  document.getElementById("sharp").addEventListener("click", chooseSharp.bind(audioContext));
+  document.getElementById("flat").addEventListener("click", chooseFlat.bind(null, audioContext));
+  document.getElementById("sharp").addEventListener("click", chooseSharp.bind(null, audioContext));
   document.addEventListener("keyup", function(evt) {
     // Logic using evt.which, not evt.keyCode
     let whichJ = 74; // Keypress: "J"
