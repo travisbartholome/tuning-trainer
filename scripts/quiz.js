@@ -1,9 +1,11 @@
 // TODO: Add NEXT button between examples
 // TODO: Allow next button to appear and interrupt playings if the user
 //    gets the example right before the playback is finished?
+// TODO: (Make said NEXT button removable eventually using user settings/config)
 
 // Globals
 const CURRENT_EXAMPLE = {
+  allowNext: false,
   allowReplays: false, // Should be false at the beginning of each example
   isPlaying: false,
   isScored: false
@@ -120,10 +122,18 @@ function newExample(audioContext) {
   // Scoring
   CURRENT_EXAMPLE.isScored = false;
 
-  // Allow replays after the audio plays
+  // Allow replays after the audio plays, or move on if the
+  // user has already answered.
   let callback = function() {
     CURRENT_EXAMPLE.isPlaying = false;
-    addReplayButton();
+    if (CURRENT_EXAMPLE.isScored) {
+      // Timeout is arbitrary
+      setTimeout(function() {
+        playNewExample(audioContext);
+      }, 200);
+    } else {
+      addReplayButton();
+    }
   };
 
   // Initial audio playback
@@ -133,15 +143,11 @@ function newExample(audioContext) {
 
 function playNewExample(audioContext) {
   if (!CURRENT_EXAMPLE.isPlaying) {
-    // Prevent playing multiple examples simultaneously
-    CURRENT_EXAMPLE.isPlaying = true;
     // Clear feedback
     document.getElementById("feedback").innerHTML = "";
-    // Remove replay button
+    // Remove control buttons
     removeReplayButton();
     // Play next example
-    // TODO: Present a "NEXT" button between examples (IF the user wants it)
-    // (Make said NEXT button removable eventually using user settings/config)
     newExample(audioContext);
   }
 }
@@ -161,6 +167,7 @@ function chooseFlat(audioContext) {
   // Update and display score
   updateScore(CURRENT_EXAMPLE.isFlat);
   displayScore();
+  // TODO: Change this to be dependent on the NEXT button?
   // Play next example
   setTimeout(function() {
     playNewExample(audioContext);
@@ -182,6 +189,7 @@ function chooseSharp(audioContext) {
   // Update and display score
   updateScore(!CURRENT_EXAMPLE.isFlat);
   displayScore();
+  // TODO: Change this to be dependent on the NEXT button?
   // Play next example
   setTimeout(function() {
     playNewExample(audioContext);
@@ -242,6 +250,12 @@ function setAnswerListeners(audioContext) {
       CURRENT_EXAMPLE.isPlaying = true;
       playAudio(audioContext, noteName, octave, detune, duration, waveform, function(){
         CURRENT_EXAMPLE.isPlaying = false;
+        if (CURRENT_EXAMPLE.isScored) {
+          // Timeout is arbitrary
+          setTimeout(function() {
+            playNewExample(audioContext);
+          }, 200);
+        }
       });
     }
   });
@@ -261,7 +275,7 @@ function setAnswerListeners(audioContext) {
 }
 
 // (Should execute after DOM load)
-(function() {
+(function onPageLoad() {
   let audioContext = new AudioContext();
   setAnswerListeners(audioContext);
   newExample(audioContext);
