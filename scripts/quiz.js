@@ -1,8 +1,3 @@
-// TODO: Add NEXT button between examples
-// TODO: Allow next button to appear and interrupt playings if the user
-//    gets the example right before the playback is finished?
-// TODO: (Make said NEXT button removable eventually using user settings/config)
-
 // Globals
 const CURRENT_EXAMPLE = {
   allowNext: false,

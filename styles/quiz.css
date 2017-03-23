@@ -38,6 +38,12 @@
   transition: 0.2s;
 }
 
+#menu {
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
 #score-box {
   font-size: 48px;
   padding: 20px 40px;
