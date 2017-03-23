@@ -1,8 +1,3 @@
-// TODO: Add NEXT button between examples
-// TODO: Allow next button to appear and interrupt playings if the user
-//    gets the example right before the playback is finished?
-// TODO: (Make said NEXT button removable eventually using user settings/config)
-
 // Globals
 const CURRENT_EXAMPLE = {
   allowNext: false,
@@ -100,10 +95,14 @@ function updateScore(isCorrect) {
   }
 }
 
+function getDetune() {
+  return Number(document.getElementById("accuracy").value);
+}
+
 function newExample(audioContext) {
   // Assorted parameters
   const noteList = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-  let tuningDelta = 30; // Arbitrary. TODO: Make configurable.
+  let tuningDelta = getDetune(); // User-defined
   let isFlat = (Math.random() < 0.5);
   let detune = isFlat ? -tuningDelta : tuningDelta;
   let duration = 2; // Arbitrary. TODO: Make configurable.
