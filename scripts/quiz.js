@@ -11,6 +11,32 @@ const DATA = {
   totalQuestions: 0
 };
 
+const USER_COOKIE = {};
+
+/* Cookie functions */
+
+function setCookie(cookieObject) {
+  for (var i in cookieObject) {
+    document.cookie = encodeURIComponent(i) + "=" + encodeURIComponent(cookieObject[i]);
+  }
+}
+
+function setSingleCookie(key, value) {
+  document.cookie = encodeURIComponent(key) + "=" + encodeURIComponent(value);
+  USER_COOKIE[key] = value;
+}
+
+function getCookie() {
+  let cookiePairs = document.cookie.split("; ");
+  for (let i = 0; i < cookiePairs.length; i++) {
+    let keyValue = cookiePairs[i].split("=");
+    USER_COOKIE[keyValue[0]] = keyValue[1];
+  }
+}
+
+/* Primary app functions */
+
+// TODO: Add another parameter for interval type
 function playAudio(audioContext, noteName, octave, detune, duration, waveform, callback) {
   // Sound constants
   const A4 = 440;
@@ -276,6 +302,7 @@ function setAnswerListeners(audioContext) {
 // (Should execute after DOM load)
 (function onPageLoad() {
   let audioContext = new AudioContext();
+  getCookie();
   setAnswerListeners(audioContext);
   newExample(audioContext);
 })();
