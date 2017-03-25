@@ -11,7 +11,11 @@ const DATA = {
   totalQuestions: 0
 };
 
-const USER_COOKIE = {};
+const COOKIE_DAYS = 1; // Arbitrary lifetime of cookie
+const USER_COOKIE = {
+  "max-age": (24*60*60) * COOKIE_DAYS,
+  "path": "/"
+};
 
 /* Cookie functions */
 
@@ -26,13 +30,27 @@ function setSingleCookie(key, value) {
   USER_COOKIE[key] = value;
 }
 
-function getCookie() {
-  let cookiePairs = document.cookie.split("; ");
-  for (let i = 0; i < cookiePairs.length; i++) {
-    let keyValue = cookiePairs[i].split("=");
-    USER_COOKIE[keyValue[0]] = keyValue[1];
+function getCookie(callback) {
+  if (document.cookie !== "") {
+    let cookiePairs = document.cookie.split("; ");
+    for (let i = 0; i < cookiePairs.length; i++) {
+      let keyValue = cookiePairs[i].split("=");
+      USER_COOKIE[keyValue[0]] = keyValue[1];
+    }
+  }
+  callback();
+}
+
+function setUserPreferences() {
+  // TODO: Find some way to generalize this process.
+  if (USER_COOKIE.accuracy) {
+    let selector = "#accuracy option[value='" + USER_COOKIE.accuracy + "']";
+    document.querySelector(selector).selected = true;
   }
 }
+
+// TODO: Need to work out how to store and update user preferences in cookies.
+// TODO: Note: make sure no sensitive information ever goes in said cookies.
 
 /* Primary app functions */
 
@@ -121,14 +139,16 @@ function updateScore(isCorrect) {
   }
 }
 
-function getDetune() {
-  return Number(document.getElementById("accuracy").value);
+function getAccuracy() {
+  let accuracy = Number(document.getElementById("accuracy").value);
+  USER_COOKIE.accuracy = accuracy;
+  return accuracy;
 }
 
 function newExample(audioContext) {
   // Assorted parameters
   const noteList = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-  let tuningDelta = getDetune(); // User-defined
+  let tuningDelta = getAccuracy(); // User-defined
   let isFlat = (Math.random() < 0.5);
   let detune = isFlat ? -tuningDelta : tuningDelta;
   let duration = 2; // Arbitrary. TODO: Make configurable.
@@ -302,7 +322,12 @@ function setAnswerListeners(audioContext) {
 // (Should execute after DOM load)
 (function onPageLoad() {
   let audioContext = new AudioContext();
-  getCookie();
+  getCookie(setUserPreferences);
   setAnswerListeners(audioContext);
   newExample(audioContext);
+
+  // Save user settings when they leave the quiz
+  window.addEventListener("beforeunload", function(evt) {
+    setCookie(USER_COOKIE);
+  });
 })();
