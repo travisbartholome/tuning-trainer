@@ -11,17 +11,22 @@ const DATA = {
   totalQuestions: 0
 };
 
-const COOKIE_DAYS = 1; // Arbitrary lifetime of cookie
-const USER_COOKIE = {
+const COOKIE_DAYS = 30; // Arbitrary lifetime of cookie
+const USER_COOKIE = {};
+const COOKIE_DEFAULTS = {
   "max-age": (24*60*60) * COOKIE_DAYS,
   "path": "/"
 };
 
 /* Cookie functions */
 
-function setCookie(cookieObject) {
+function setCookie(cookieObject, cookieDefaults) {
   for (var i in cookieObject) {
     document.cookie = encodeURIComponent(i) + "=" + encodeURIComponent(cookieObject[i]);
+  }
+  // Should override any existing path, max-age, etc.
+  for (var i in cookieDefaults) {
+    document.cookie = i + "=" + cookieDefaults[i];
   }
 }
 
@@ -328,6 +333,6 @@ function setAnswerListeners(audioContext) {
 
   // Save user settings when they leave the quiz
   window.addEventListener("beforeunload", function(evt) {
-    setCookie(USER_COOKIE);
+    setCookie(USER_COOKIE, COOKIE_DEFAULTS);
   });
 })();
