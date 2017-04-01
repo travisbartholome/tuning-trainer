@@ -35,7 +35,7 @@ function getCookie(callback) {
     let cookiePairs = document.cookie.split("; ");
     for (let i = 0; i < cookiePairs.length; i++) {
       let keyValue = cookiePairs[i].split("=");
-      USER_COOKIE[keyValue[0]] = keyValue[1];
+      USER_COOKIE[keyValue[0]] = decodeURIComponent(keyValue[1]);
     }
   }
   callback();
