@@ -1,0 +1,77 @@
+.menu-entry {
+  font-size: 24px;
+  margin-bottom: 10px;
+  width: 25%;
+}
+
+.menu-select {
+  font-size: 20px;
+}
+
+.center-container {
+  text-align: center;
+  width: 100%;
+}
+
+.lg-button {
+  border: 2px solid black;
+  border-radius: 10px;
+  display: inline-block;
+  margin: 0 15px;
+  padding: 15px 50px;
+  text-align: center;
+}
+
+.lg-button .flat-sharp {
+  display: block;
+  font-size: 48px;
+  margin: 5px;
+}
+
+.lg-button:hover, .lg-button:focus {
+  background: #444444;
+  color: #ffffff;
+  transition: 0.2s;
+}
+
+.md-button {
+  border: 1px solid red;
+  border-radius: 10px;
+  display: inline-block;
+  padding: 5px 25px;
+  text-align: center;
+}
+
+.md-button:hover {
+  background: #dd4444;
+  color: #ffffff;
+  transition: 0.2s;
+}
+
+#menu {
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+#score-box {
+  font-size: 48px;
+  padding: 20px 40px;
+  position: absolute;
+  right: 20vw;
+  top: 5vh;
+}
+
+#feedback-box {
+  font-size: 120px;
+}
+
+#flat-sharp-btns {
+  position: absolute;
+  top: 35vh;
+}
+
+#control-btns {
+  position: absolute;
+  top: 55vh;
+}
