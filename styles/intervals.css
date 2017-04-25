@@ -9,8 +9,12 @@
 }
 
 .center-container {
+  border: 1px solid blue;
+  margin: 0 auto;
+  position: relative;
   text-align: center;
-  width: 100%;
+  top: -20vh;
+  width: 600px;
 }
 
 .lg-button {
@@ -64,14 +68,4 @@
 
 #feedback-box {
   font-size: 120px;
-}
-
-#flat-sharp-btns {
-  position: absolute;
-  top: 35vh;
-}
-
-#control-btns {
-  position: absolute;
-  top: 55vh;
 }

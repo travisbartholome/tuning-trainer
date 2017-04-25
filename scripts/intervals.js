@@ -18,6 +18,8 @@ const COOKIE_DEFAULTS = {
   "path": "/"
 };
 
+const INTERVALS = ['m2', 'M2', 'm3', 'M3', 'P4', 'TT', 'P5', 'm6', 'M6', 'm7', 'M7', 'P8'];
+
 /* Cookie functions */
 
 function setCookie(cookieObject, cookieDefaults) {
@@ -51,6 +53,10 @@ function setUserPreferences() {
   if (USER_COOKIE.accuracy) {
     let selector = "#accuracy option[value='" + USER_COOKIE.accuracy + "']";
     document.querySelector(selector).selected = true;
+  }
+
+  if (USER_COOKIE.intervals) {
+    // TODO: Code to handle interval choices from cookies
   }
 }
 
@@ -148,6 +154,17 @@ function getAccuracy() {
   let accuracy = Number(document.getElementById("accuracy").value);
   USER_COOKIE.accuracy = accuracy;
   return accuracy;
+}
+
+function getIntervals() {
+  let intervals = document.getElementsByName("intervals");
+  let checkedString = "";
+  for (var i = 0; i < intervals.length; i++) {
+    if (intervals[i].checked) {
+      checkedString += intervals[i].value;
+    }
+  }
+  return checkedString;
 }
 
 function newExample(audioContext) {
