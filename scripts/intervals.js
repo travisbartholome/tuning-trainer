@@ -56,11 +56,12 @@ function setUserPreferences() {
   }
 
   if (USER_COOKIE.intervals) {
-    // TODO: Code to handle interval choices from cookies
+    for (let i = 0; i < USER_COOKIE.intervals.length; i += 2) {
+      document.getElementById("interval" + USER_COOKIE.intervals.slice(i, i+2)).checked = true;
+    }
   }
 }
 
-// TODO: Need to work out how to store and update user preferences in cookies.
 // TODO: Note: make sure no sensitive information ever goes in said cookies.
 
 /* Primary app functions */
@@ -159,18 +160,22 @@ function getAccuracy() {
 function getIntervals() {
   let intervals = document.getElementsByName("intervals");
   let checkedString = "";
+  let intervalsArray = [];
   for (var i = 0; i < intervals.length; i++) {
     if (intervals[i].checked) {
       checkedString += intervals[i].value;
+      intervalsArray.push(intervals[i].value);
     }
   }
-  return checkedString;
+  if (checkedString) USER_COOKIE.intervals = checkedString;
+  return intervalsArray;
 }
 
 function newExample(audioContext) {
   // Assorted parameters
   const noteList = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
   let tuningDelta = getAccuracy(); // User-defined
+  let intervals = getIntervals(); // User-defined
   let isFlat = (Math.random() < 0.5);
   let detune = isFlat ? -tuningDelta : tuningDelta;
   let duration = 2; // Arbitrary. TODO: Make configurable.
