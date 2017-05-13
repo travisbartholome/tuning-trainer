@@ -18,5 +18,8 @@
   "homepage": "https://github.com/travisbartholome/tuning-trainer#readme",
   "engines": {
     "node": "6.x"
+  },
+  "dependencies": {
+    "express": "^4.15.2"
   }
 }
