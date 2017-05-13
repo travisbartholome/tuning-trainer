@@ -1,0 +1,22 @@
+{
+  "name": "tuning-trainer",
+  "version": "1.2.1",
+  "description": "Ear training web app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/travisbartholome/tuning-trainer.git"
+  },
+  "author": "Travis Bartholome",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/travisbartholome/tuning-trainer/issues"
+  },
+  "homepage": "https://github.com/travisbartholome/tuning-trainer#readme",
+  "engines": {
+    "node": "6.x"
+  }
+}
