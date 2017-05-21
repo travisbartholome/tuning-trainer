@@ -18,8 +18,6 @@ const COOKIE_DEFAULTS = {
   "path": "/"
 };
 
-const INTERVALS = ['m2', 'M2', 'm3', 'M3', 'P4', 'TT', 'P5', 'm6', 'M6', 'm7', 'M7', 'P8'];
-
 /* Cookie functions */
 
 function setCookie(cookieObject, cookieDefaults) {
@@ -67,12 +65,12 @@ function setUserPreferences() {
 /* Primary app functions */
 
 // TODO: Add another parameter for interval type
-function playAudio(audioContext, noteName, octave, detune, duration, waveform, callback) {
+function playAudio(audioContext, noteName, interval, octave, detune, duration, waveform, callback) {
   // Sound constants
   const A4 = 440;
   const C4 = A4 * Math.pow(2, -9/12);
   const noteList = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-  let slightDelay = 0.1; // (In seconds)
+  const intervalList = ["PU", "m2", "M2", "m3", "M3", "P4", "TT", "P5", "m6", "M6", "m7", "M7", "P8"];
 
   // Calculate chosen frequency
   let baseFrequency = C4 * Math.pow(2, noteList.indexOf(noteName)/12);
@@ -85,7 +83,8 @@ function playAudio(audioContext, noteName, octave, detune, duration, waveform, c
   let primaryGain = audioContext.createGain();
 
   // Timing variables
-  let startTime = audioContext.currentTime + 0.1;
+  let slightDelay = 0.1; // (In seconds)
+  let startTime = audioContext.currentTime + slightDelay;
   let primaryDelay = 1;
   let stopTime = startTime + duration + primaryDelay;
 
@@ -94,18 +93,20 @@ function playAudio(audioContext, noteName, octave, detune, duration, waveform, c
   baseGain.connect(audioContext.destination);
   // Connect primary node
   primary.connect(primaryGain);
-  primary.connect(audioContext.destination);
+  primaryGain.connect(audioContext.destination);
 
   // Settings for base node
   base.frequency.value = baseFrequency;
   base.type = waveform;
-  baseGain.gain.value = 0.3; // So the primary is louder than the base
+  baseGain.gain.value = 0.5; // So the primary is louder than the base
 
   // Settings for primary node
-  primary.frequency.value = baseFrequency; // TODO: Change eventually for intervals
+  // TODO: Allow for ascending and descending intervals.
+  // TODO: Is the logic clear here? Probably not, if you're asking.
+  primary.frequency.value = baseFrequency * Math.pow(2, intervalList.indexOf(interval) / 12);
   primary.type = waveform;
-  primary.detune.value = detune; // Detune A440 up by 25 cents
-  primaryGain.gain.value = 0.6; // Take the edge off
+  primary.detune.value = detune; // Detune the "primary" note
+  primaryGain.gain.value = 0.7; // Take the edge off
 
   // Start sounds
   base.start(startTime);
@@ -174,8 +175,9 @@ function getIntervals() {
 function newExample(audioContext) {
   // Assorted parameters
   const noteList = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-  let tuningDelta = getAccuracy(); // User-defined
-  let intervals = getIntervals(); // User-defined
+  let tuningDelta = getAccuracy(); // User-defined; Number
+  let intervalList = getIntervals(); // User-defined; Array
+  let interval = intervalList[Math.floor(Math.random() * intervalList.length)] || "PU"; // String
   let isFlat = (Math.random() < 0.5);
   let detune = isFlat ? -tuningDelta : tuningDelta;
   let duration = 2; // Arbitrary. TODO: Make configurable.
@@ -188,6 +190,7 @@ function newExample(audioContext) {
   CURRENT_EXAMPLE.noteName = noteName;
   CURRENT_EXAMPLE.octave = octave;
   CURRENT_EXAMPLE.detune = detune;
+  CURRENT_EXAMPLE.interval = interval;
   CURRENT_EXAMPLE.duration = duration;
   CURRENT_EXAMPLE.waveform = waveform;
 
@@ -210,7 +213,7 @@ function newExample(audioContext) {
 
   // Initial audio playback
   CURRENT_EXAMPLE.isPlaying = true;
-  playAudio(audioContext, noteName, octave, detune, duration, waveform, callback);
+  playAudio(audioContext, noteName, interval, octave, detune, duration, waveform, callback);
 }
 
 function playNewExample(audioContext) {
@@ -314,13 +317,14 @@ function setAnswerListeners(audioContext) {
     // Pull in information about current example from global variables
     let noteName = CURRENT_EXAMPLE.noteName,
         octave = CURRENT_EXAMPLE.octave,
+        interval = CURRENT_EXAMPLE.interval,
         detune = CURRENT_EXAMPLE.detune,
         duration = CURRENT_EXAMPLE.duration,
         waveform = CURRENT_EXAMPLE.waveform;
     // Replay current example if replays are currently allowed
     if (CURRENT_EXAMPLE.allowReplays && !CURRENT_EXAMPLE.isPlaying) {
       CURRENT_EXAMPLE.isPlaying = true;
-      playAudio(audioContext, noteName, octave, detune, duration, waveform, function(){
+      playAudio(audioContext, noteName, interval, octave, detune, duration, waveform, function(){
         CURRENT_EXAMPLE.isPlaying = false;
         if (CURRENT_EXAMPLE.isScored) {
           // Timeout is arbitrary
