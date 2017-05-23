@@ -100,8 +100,7 @@ function playAudio(audioContext, noteName, interval, direction, octave, detune, 
   baseGain.gain.value = 0.5; // So the primary is louder than the base
 
   // Settings for primary node
-  let dirMult = direction ? direction : (Math.random() < 0.5 ? -1 : 1);
-  primary.frequency.value = baseFrequency * Math.pow(2, dirMult * intervalList.indexOf(interval) / 12);
+  primary.frequency.value = baseFrequency * Math.pow(2, direction * intervalList.indexOf(interval) / 12);
   primary.type = waveform;
   primary.detune.value = detune; // Detune the "primary" note
   primaryGain.gain.value = 0.7; // Take the edge off
@@ -172,13 +171,12 @@ function getIntervals() {
 
 function getDirection() {
   let dirStr = document.getElementById("intervalDirection").value;
-  if (dirStr === "ascending") {
-    return 1;
-  } else if (dirStr === "descending") {
-    return -1;
-  } else {
-    return 0;
+  let direction = 1;
+  if (dirStr === "descending" || (dirStr = "both" && Math.random() < 0.5)) {
+    direction = -1;
   }
+  CURRENT_EXAMPLE.direction = direction;
+  return direction;
 }
 
 function newExample(audioContext) {
@@ -187,7 +185,7 @@ function newExample(audioContext) {
   let tuningDelta = getAccuracy(); // User-defined; Number
   let intervalList = getIntervals(); // User-defined; Array
   let interval = intervalList[Math.floor(Math.random() * intervalList.length)] || "PU"; // String
-  let direction = getDirection(); // -1, 0, or 1
+  let direction = getDirection(); // -1 or 1
   let isFlat = (Math.random() < 0.5);
   let detune = isFlat ? -tuningDelta : tuningDelta;
   let duration = 2; // Arbitrary. TODO: Make configurable.
