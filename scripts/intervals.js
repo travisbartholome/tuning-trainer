@@ -64,8 +64,7 @@ function setUserPreferences() {
 
 /* Primary app functions */
 
-// TODO: Add another parameter for interval type
-function playAudio(audioContext, noteName, interval, octave, detune, duration, waveform, callback) {
+function playAudio(audioContext, noteName, interval, direction, octave, detune, duration, waveform, callback) {
   // Sound constants
   const A4 = 440;
   const C4 = A4 * Math.pow(2, -9/12);
@@ -101,9 +100,8 @@ function playAudio(audioContext, noteName, interval, octave, detune, duration, w
   baseGain.gain.value = 0.5; // So the primary is louder than the base
 
   // Settings for primary node
-  // TODO: Allow for ascending and descending intervals.
-  // TODO: Is the logic clear here? Probably not, if you're asking.
-  primary.frequency.value = baseFrequency * Math.pow(2, intervalList.indexOf(interval) / 12);
+  let dirMult = direction ? direction : (Math.random() < 0.5 ? -1 : 1);
+  primary.frequency.value = baseFrequency * Math.pow(2, dirMult * intervalList.indexOf(interval) / 12);
   primary.type = waveform;
   primary.detune.value = detune; // Detune the "primary" note
   primaryGain.gain.value = 0.7; // Take the edge off
@@ -172,12 +170,24 @@ function getIntervals() {
   return intervalsArray;
 }
 
+function getDirection() {
+  let dirStr = document.getElementById("intervalDirection").value;
+  if (dirStr === "ascending") {
+    return 1;
+  } else if (dirStr === "descending") {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+
 function newExample(audioContext) {
   // Assorted parameters
   const noteList = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
   let tuningDelta = getAccuracy(); // User-defined; Number
   let intervalList = getIntervals(); // User-defined; Array
   let interval = intervalList[Math.floor(Math.random() * intervalList.length)] || "PU"; // String
+  let direction = getDirection(); // -1, 0, or 1
   let isFlat = (Math.random() < 0.5);
   let detune = isFlat ? -tuningDelta : tuningDelta;
   let duration = 2; // Arbitrary. TODO: Make configurable.
@@ -191,6 +201,7 @@ function newExample(audioContext) {
   CURRENT_EXAMPLE.octave = octave;
   CURRENT_EXAMPLE.detune = detune;
   CURRENT_EXAMPLE.interval = interval;
+  CURRENT_EXAMPLE.direction = direction;
   CURRENT_EXAMPLE.duration = duration;
   CURRENT_EXAMPLE.waveform = waveform;
 
@@ -213,7 +224,7 @@ function newExample(audioContext) {
 
   // Initial audio playback
   CURRENT_EXAMPLE.isPlaying = true;
-  playAudio(audioContext, noteName, interval, octave, detune, duration, waveform, callback);
+  playAudio(audioContext, noteName, interval, direction, octave, detune, duration, waveform, callback);
 }
 
 function playNewExample(audioContext) {
@@ -318,13 +329,14 @@ function setAnswerListeners(audioContext) {
     let noteName = CURRENT_EXAMPLE.noteName,
         octave = CURRENT_EXAMPLE.octave,
         interval = CURRENT_EXAMPLE.interval,
+        direction = CURRENT_EXAMPLE.direction,
         detune = CURRENT_EXAMPLE.detune,
         duration = CURRENT_EXAMPLE.duration,
         waveform = CURRENT_EXAMPLE.waveform;
     // Replay current example if replays are currently allowed
     if (CURRENT_EXAMPLE.allowReplays && !CURRENT_EXAMPLE.isPlaying) {
       CURRENT_EXAMPLE.isPlaying = true;
-      playAudio(audioContext, noteName, interval, octave, detune, duration, waveform, function(){
+      playAudio(audioContext, noteName, interval, direction, octave, detune, duration, waveform, function(){
         CURRENT_EXAMPLE.isPlaying = false;
         if (CURRENT_EXAMPLE.isScored) {
           // Timeout is arbitrary

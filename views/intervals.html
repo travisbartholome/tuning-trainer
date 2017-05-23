@@ -22,7 +22,7 @@
       <legend>Active Intervals</legend>
       <!-- I need to set up a framework. -->
       <div>
-        <input type="checkbox" value="PU" id="intervalPU" name="intervals">
+        <input type="checkbox" value="PU" id="intervalPU" name="intervals" checked>
         <label for="intervalPU">PU</label>
       </div>
       <div>
@@ -74,6 +74,15 @@
         <label for="intervalP8">P8</label>
       </div>
     </fieldset>
+
+    <div class="menu-entry">
+      <label class="menu-title" for="intervalDirection">Interval direction:&nbsp;</label>
+      <select class="menu-select" name="intervalDirection" id="intervalDirection">
+        <option value="ascending">Ascending</option>
+        <option value="descending">Descending</option>
+        <option value="both" selected>Ascending and Descending</option>
+      </select>
+    </div>
   </div>
 
   <div id="score-box">

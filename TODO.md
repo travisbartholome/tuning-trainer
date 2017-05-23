@@ -2,6 +2,8 @@
 
  - Add a way for the user to choose ascending/descending intervals
 
+ - Fix feedback box styles so that the UI is static again
+
 # Long-term TODO List
 
 ### Add pitch accuracy test
