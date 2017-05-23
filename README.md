@@ -2,8 +2,9 @@
 
 ## Go to the newest live version [here](https://tuning-trainer.herokuapp.com/)!
 
-Web app for ear training; plays pitches to test a player's ability to hear whether
-a pitch is sharp, flat, in tune, etc., and by how much.
+Tuning trainer is a web app for ear training.
+It plays pitches to test a player's ability to hear whether
+a pitch is sharp, flat, or in tune, and by how much.
 
 Eventually, this will feature a quiz-style format using several levels of
 difficulty. Unisons, octaves, intervals; harmonic and melodic (and in between).

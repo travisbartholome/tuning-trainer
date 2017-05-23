@@ -1,8 +1,8 @@
 # Short-term TODOs
 
- - Add a way for the user to choose ascending/descending intervals
-
  - Fix feedback box styles so that the UI is static again
+
+ - Add ability to select melodic/harmonic/combination interval playback
 
 # Long-term TODO List
 
@@ -14,7 +14,7 @@
 
 ### Add intervals
 
-  - [ ] Should be able to specify ascending, descending, or both
+  - [x] Should be able to specify ascending, descending, or both
 
 	- [ ] Multiple difficulty levels: octaves, fifths, fourths, thirds, sevenths, sixths and seconds
 

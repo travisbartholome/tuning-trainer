@@ -9,7 +9,6 @@
 }
 
 .center-container {
-  border: 1px solid blue;
   margin: 0 auto;
   position: relative;
   text-align: center;
@@ -42,6 +41,7 @@
   border: 1px solid red;
   border-radius: 10px;
   display: inline-block;
+  margin-top: 10px;
   padding: 5px 25px;
   text-align: center;
 }
@@ -68,4 +68,11 @@
 
 #feedback-box {
   font-size: 120px;
+  left: 50%;
+  position: absolute;
+  top: 2vh;
+  -moz-transform: translateX(-50%); /* TODO: Add grunt task to build with prefixes */
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  z-index: 0;
 }
