@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Tuning Trainer</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="intervals.css" />
+</head>
+<body>
+  <div class="menu" id="options">
+    <div class="menu-entry">
+      <label class="menu-title" for="accuracy">Accuracy:&nbsp;</label>
+      <select class="menu-select" name="accuracy" id="accuracy">
+        <option value="5">5 cents</option>
+        <option value="10">10 cents</option>
+        <option value="15">15 cents</option>
+        <option value="20">20 cents</option>
+        <option value="30" selected>30 cents</option>
+      </select>
+    </div>
+
+    <fieldset class="menu-entry">
+      <legend>Active Intervals</legend>
+      <!-- I need to set up a framework. -->
+      <div>
+        <input type="checkbox" value="PU" id="intervalPU" name="intervals" checked>
+        <label for="intervalPU">PU</label>
+      </div>
+      <div>
+        <input type="checkbox" value="m2" id="intervalm2" name="intervals">
+        <label for="intervalm2">m2</label>
+      </div>
+      <div>
+        <input type="checkbox" value="M2" id="intervalM2" name="intervals">
+        <label for="intervalM2">M2</label>
+      </div>
+      <div>
+        <input type="checkbox" value="m3" id="intervalm3" name="intervals">
+        <label for="intervalm3">m3</label>
+      </div>
+      <div>
+        <input type="checkbox" value="M3" id="intervalM3" name="intervals">
+        <label for="intervalM3">M3</label>
+      </div>
+      <div>
+        <input type="checkbox" value="P4" id="intervalP4" name="intervals">
+        <label for="intervalP4">P4</label>
+      </div>
+      <div>
+        <input type="checkbox" value="TT" id="intervalTT" name="intervals">
+        <label for="intervalTT">TT</label>
+      </div>
+      <div>
+        <input type="checkbox" value="P5" id="intervalP5" name="intervals">
+        <label for="intervalP5">P5</label>
+      </div>
+      <div>
+        <input type="checkbox" value="m6" id="intervalm6" name="intervals">
+        <label for="intervalm6">m6</label>
+      </div>
+      <div>
+        <input type="checkbox" value="M6" id="intervalM6" name="intervals">
+        <label for="intervalM6">M6</label>
+      </div>
+      <div>
+        <input type="checkbox" value="m7" id="intervalm7" name="intervals">
+        <label for="intervalm7">m7</label>
+      </div>
+      <div>
+        <input type="checkbox" value="M7" id="intervalM7" name="intervals">
+        <label for="intervalM7">M7</label>
+      </div>
+      <div>
+        <input type="checkbox" value="P8" id="intervalP8" name="intervals">
+        <label for="intervalP8">P8</label>
+      </div>
+    </fieldset>
+
+    <div class="menu-entry">
+      <label class="menu-title" for="intervalDirection">Interval direction:&nbsp;</label>
+      <select class="menu-select" name="intervalDirection" id="intervalDirection">
+        <option value="ascending">Ascending</option>
+        <option value="descending">Descending</option>
+        <option value="both" selected>Ascending and Descending</option>
+      </select>
+    </div>
+
+    <div class="menu-entry">
+      <label class="menu-title" for="playbackType">Playback type:&nbsp;</label>
+      <select class="menu-select" name="playbackType" id="playbackType">
+        <option value="melodic">Melodic</option>
+        <option value="semi-harmonic" selected>Semi-Harmonic</option>
+        <option value="harmonic">Harmonic</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="score-box">
+    <p id="score"><!-- format: 122% (1/2) --></p>
+  </div>
+  <div class="center-container" id="feedback-box">
+    <p id="feedback"></p>
+  </div>
+
+  <div class="center-container" id="flat-sharp-btns">
+    <div class="lg-button" id="flat">
+      <p class="flat-sharp">♭</p>
+      <p class="key-label">J</p>
+    </div>
+    <div class="lg-button" id="sharp">
+      <p class="flat-sharp">♯</p>
+      <p class="key-label">K</p>
+    </div>
+  </div>
+
+  <div class="center-container" id="control-btns">
+    <div class="md-button" id="replay" style="display: none">
+      <p>Replay</p>
+      <p class="key-label">R</p>
+    </div>
+    <div class="md-button" id="next" style="display: none">
+      <p>Next</p>
+      <p class="key-label">N</p>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="intervals.js"></script>
+</body>
+</html>
