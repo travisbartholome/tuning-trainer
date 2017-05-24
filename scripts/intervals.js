@@ -64,7 +64,7 @@ function setUserPreferences() {
 
 /* Primary app functions */
 
-function playAudio(audioContext, noteName, interval, direction, octave, detune, duration, waveform, callback) {
+function playAudio(audioContext, noteName, interval, direction, octave, detune, duration, delay, waveform, callback) {
   // Sound constants
   const A4 = 440;
   const C4 = A4 * Math.pow(2, -9/12);
@@ -84,8 +84,9 @@ function playAudio(audioContext, noteName, interval, direction, octave, detune, 
   // Timing variables
   let slightDelay = 0.1; // (In seconds)
   let startTime = audioContext.currentTime + slightDelay;
-  let primaryDelay = 1;
-  let stopTime = startTime + duration + primaryDelay;
+  let primaryDelay = delay * duration;
+  let primaryStop = startTime + duration + primaryDelay;
+  let baseStop = (delay === 1) ? startTime + duration : primaryStop;
 
   // Connect base node
   base.connect(baseGain);
@@ -110,11 +111,11 @@ function playAudio(audioContext, noteName, interval, direction, octave, detune, 
   primary.start(startTime + primaryDelay);
 
   // Stop sounds eventually
-  primary.stop(stopTime);
-  base.stop(stopTime);
+  primary.stop(primaryStop);
+  base.stop(baseStop);
 
   // Execute callback after audio finishes playing
-  setTimeout(callback, (stopTime - startTime + slightDelay) * 1000);
+  setTimeout(callback, (primaryStop - startTime + slightDelay) * 1000);
 }
 
 function addReplayButton() {
@@ -179,6 +180,13 @@ function getDirection() {
   return direction;
 }
 
+function getDelay() {
+  let delayStr = document.getElementById("playbackType").value;
+  let delay = (delayStr === "melodic") ? 1 : (delayStr === "harmonic") ? 0 : 0.5;
+  CURRENT_EXAMPLE.delay = delay;
+  return delay;
+}
+
 function newExample(audioContext) {
   // Assorted parameters
   const noteList = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
@@ -189,18 +197,22 @@ function newExample(audioContext) {
   let isFlat = (Math.random() < 0.5);
   let detune = isFlat ? -tuningDelta : tuningDelta;
   let duration = 2; // Arbitrary. TODO: Make configurable.
+  let delay = getDelay(); // Delay for the second note. 0, 0.5, or 1
   let waveform = "triangle"; // Arbitrary. TODO: Make configurable.
   let noteName = noteList[Math.floor(Math.random()*12)];
   let octave = 4; // Arbitrary. TODO: Make configurable.
 
   // Set global parameters accordingly
+  // TODO: Some of these aren't necessary because the getter functions already
+  //    set the value of the CURRENT_EXAMPLE property. Clean up a bit?
   CURRENT_EXAMPLE.isFlat = isFlat;
   CURRENT_EXAMPLE.noteName = noteName;
-  CURRENT_EXAMPLE.octave = octave;
-  CURRENT_EXAMPLE.detune = detune;
   CURRENT_EXAMPLE.interval = interval;
   CURRENT_EXAMPLE.direction = direction;
+  CURRENT_EXAMPLE.octave = octave;
+  CURRENT_EXAMPLE.detune = detune;
   CURRENT_EXAMPLE.duration = duration;
+  CURRENT_EXAMPLE.delay = delay;
   CURRENT_EXAMPLE.waveform = waveform;
 
   // Scoring
@@ -222,7 +234,7 @@ function newExample(audioContext) {
 
   // Initial audio playback
   CURRENT_EXAMPLE.isPlaying = true;
-  playAudio(audioContext, noteName, interval, direction, octave, detune, duration, waveform, callback);
+  playAudio(audioContext, noteName, interval, direction, octave, detune, duration, delay, waveform, callback);
 }
 
 function playNewExample(audioContext) {
@@ -330,11 +342,12 @@ function setAnswerListeners(audioContext) {
         direction = CURRENT_EXAMPLE.direction,
         detune = CURRENT_EXAMPLE.detune,
         duration = CURRENT_EXAMPLE.duration,
+        delay = CURRENT_EXAMPLE.delay,
         waveform = CURRENT_EXAMPLE.waveform;
     // Replay current example if replays are currently allowed
     if (CURRENT_EXAMPLE.allowReplays && !CURRENT_EXAMPLE.isPlaying) {
       CURRENT_EXAMPLE.isPlaying = true;
-      playAudio(audioContext, noteName, interval, direction, octave, detune, duration, waveform, function(){
+      playAudio(audioContext, noteName, interval, direction, octave, detune, duration, delay, waveform, function(){
         CURRENT_EXAMPLE.isPlaying = false;
         if (CURRENT_EXAMPLE.isScored) {
           // Timeout is arbitrary

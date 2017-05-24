@@ -1,6 +1,8 @@
 # Short-term TODOs
 
- - Add ability to select melodic/harmonic/combination interval playback
+ - Add playback type to cookies
+
+ - (Low priority) Figure out live reloading
 
 # Long-term TODO List
 
