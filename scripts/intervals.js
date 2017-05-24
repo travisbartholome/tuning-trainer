@@ -58,6 +58,16 @@ function setUserPreferences() {
       document.getElementById("interval" + USER_COOKIE.intervals.slice(i, i+2)).checked = true;
     }
   }
+
+  if (USER_COOKIE.direction) {
+    let selector = "#intervalDirection option[value='" + USER_COOKIE.direction + "']";
+    document.querySelector(selector).selected = true;
+  }
+
+  if (USER_COOKIE.playbackType) {
+    let selector = "#playbackType option[value='" + USER_COOKIE.playbackType + "']";
+    document.querySelector(selector).selected = true;
+  }
 }
 
 // TODO: Note: make sure no sensitive information ever goes in said cookies.
@@ -173,17 +183,17 @@ function getIntervals() {
 function getDirection() {
   let dirStr = document.getElementById("intervalDirection").value;
   let direction = 1;
-  if (dirStr === "descending" || (dirStr = "both" && Math.random() < 0.5)) {
+  if (dirStr === "descending" || (dirStr === "both" && Math.random() < 0.5)) {
     direction = -1;
   }
-  CURRENT_EXAMPLE.direction = direction;
+  USER_COOKIE.direction = dirStr;
   return direction;
 }
 
 function getDelay() {
-  let delayStr = document.getElementById("playbackType").value;
-  let delay = (delayStr === "melodic") ? 1 : (delayStr === "harmonic") ? 0 : 0.5;
-  CURRENT_EXAMPLE.delay = delay;
+  let playbackType = document.getElementById("playbackType").value;
+  let delay = (playbackType === "melodic") ? 1 : (playbackType === "harmonic") ? 0 : 0.5;
+  USER_COOKIE.playbackType = playbackType;
   return delay;
 }
 
@@ -203,8 +213,6 @@ function newExample(audioContext) {
   let octave = 4; // Arbitrary. TODO: Make configurable.
 
   // Set global parameters accordingly
-  // TODO: Some of these aren't necessary because the getter functions already
-  //    set the value of the CURRENT_EXAMPLE property. Clean up a bit?
   CURRENT_EXAMPLE.isFlat = isFlat;
   CURRENT_EXAMPLE.noteName = noteName;
   CURRENT_EXAMPLE.interval = interval;

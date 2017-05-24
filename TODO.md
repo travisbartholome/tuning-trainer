@@ -1,7 +1,5 @@
 # Short-term TODOs
 
- - Add playback type to cookies
-
  - (Low priority) Figure out live reloading
 
 # Long-term TODO List
@@ -18,7 +16,7 @@
 
 - [ ] Multiple difficulty levels: octaves, fifths, fourths, thirds, sevenths, sixths and seconds
 
-- [ ] Harmonic, melodic, or halfway (harmonic with delayed second attack)
+- [x] Harmonic, melodic, or halfway (harmonic with delayed second attack)
 
 - [ ] Allow intervals greater than an octave if the user chooses
 
