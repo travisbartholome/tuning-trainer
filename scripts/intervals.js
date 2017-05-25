@@ -383,6 +383,7 @@ function setAnswerListeners(audioContext) {
 
 // (Should execute after DOM load)
 (function onPageLoad() {
+  let AudioContext = window.AudioContext || window.webkitAudioContext;
   let audioContext = new AudioContext();
   getCookie(setUserPreferences);
   setAnswerListeners(audioContext);
