@@ -19,8 +19,8 @@
     </div>
 
     <fieldset class="menu-entry">
-      <legend>Active Intervals</legend>
-      <!-- I need to set up a framework. -->
+      <legend>Intervals</legend>
+      <!-- TODO: I should probably set up a framework for this stuff. -->
       <div>
         <input type="checkbox" value="PU" id="intervalPU" name="intervals" checked>
         <label for="intervalPU">PU</label>
@@ -101,25 +101,27 @@
     <p id="feedback"></p>
   </div>
 
-  <div class="center-container" id="flat-sharp-btns">
-    <div class="lg-button" id="flat">
-      <p class="flat-sharp">♭</p>
-      <p class="key-label">J</p>
+  <div class="center-container" id="control-panel">
+    <div id="flat-sharp-btns">
+      <div class="lg-button" id="flat">
+        <p class="flat-sharp">♭</p>
+        <p class="key-label">J</p>
+      </div>
+      <div class="lg-button" id="sharp">
+        <p class="flat-sharp">♯</p>
+        <p class="key-label">K</p>
+      </div>
     </div>
-    <div class="lg-button" id="sharp">
-      <p class="flat-sharp">♯</p>
-      <p class="key-label">K</p>
-    </div>
-  </div>
 
-  <div class="center-container" id="control-btns">
-    <div class="md-button" id="replay" style="display: none">
-      <p>Replay</p>
-      <p class="key-label">R</p>
-    </div>
-    <div class="md-button" id="next" style="display: none">
-      <p>Next</p>
-      <p class="key-label">N</p>
+    <div id="control-btns">
+      <div class="md-button" id="replay" style="display: none">
+        <p>Replay</p>
+        <p class="key-label">R</p>
+      </div>
+      <div class="md-button" id="next" style="display: none">
+        <p>Next</p>
+        <p class="key-label">N</p>
+      </div>
     </div>
   </div>
 

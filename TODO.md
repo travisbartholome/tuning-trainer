@@ -1,6 +1,18 @@
 # Short-term TODOs
 
- - (Low priority) Figure out live reloading
+- Make the UI look better
+
+- (Low priority) Figure out live reloading
+
+- Move from cookies to local storage for user preferences?
+
+# Known Bugs
+
+- After using keyboard to answer, the main buttons no longer animate on hover/focus
+
+    * Possibly due to the keyup event listener inside setAnswerListeners, but I'm not sure yet.
+
+    * Replay has the same issue, but it resets/goes away temporarily with each new example.
 
 # Long-term TODO List
 
@@ -24,7 +36,7 @@
 
 - [ ] Find which note is out of tune, and by how much
 
-- [ ] This might be evil, but useful
+    * This might be evil, but useful
 
 ### Add a NEXT button
 

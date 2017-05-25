@@ -10,9 +10,7 @@
 
 .center-container {
   margin: 0 auto;
-  position: relative;
   text-align: center;
-  top: -20vh;
   width: 600px;
 }
 
@@ -58,6 +56,15 @@
   top: 0;
 }
 
+#control-panel {
+  position: absolute;
+  left: 50%;
+  top: 30vh;
+  -moz-transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
 #score-box {
   font-size: 48px;
   padding: 20px 40px;
@@ -74,5 +81,5 @@
   -moz-transform: translateX(-50%); /* TODO: Add grunt task to build with prefixes */
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
-  z-index: 0;
+  z-index: -1;
 }
